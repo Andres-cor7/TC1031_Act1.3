@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <cstdint>
 #include "utilities.h"
 using namespace std;
 class bitacora
@@ -14,6 +15,7 @@ private:
 	string ip;
 	string status;
 	int fecha;
+	uint64_t ipn;
 public:
 	bitacora();
 	bitacora(string m, int d, string h, string s, int f);
@@ -22,6 +24,7 @@ public:
 	vector<int> getHour() const;
 	int getDay();
 	string getIp();
+	uint64_t getIpn();
 	string getStatus();
 	int getFecha();
 	

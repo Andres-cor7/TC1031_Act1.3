@@ -26,13 +26,16 @@ public:
 	//SORTS
 	static void mergeSortBV(vector<bitacora>&, int, int); //Complejidad O(n log n)
 	static void quickSortV(vector<bitacora>&, int, int); //Complejidad O(n^2) peor caso, O(n log n) promedio
+	static void mergeSortBUint(vector<bitacora>&, int, int);
 
 	//Busqueda
-	static vector<int> busquedaSec(vector<bitacora>&, int n, int clave); //Complejidad:(log n)
+	static vector<int> busquedaSec(vector<bitacora>& lista, int n, int clave); //Complejidad:(log n)
+	static vector<int> busquedaSecIp(vector<bitacora>& lista, int n, uint64_t clave);
 
 private: //metodos que solo se usan en las funciones de arriba
 	static void swap(bitacora*, bitacora*); //Complejidad O(1)
 	static void mergeB(vector<bitacora>&, int, int, int); //Complejidad O(n)
+	static void mergeBUint(vector<bitacora>&, int, int, int); //Complejidad O(n)
 	static int partition(vector<bitacora>&, int, int); //Complejidad O(n)
 };
 

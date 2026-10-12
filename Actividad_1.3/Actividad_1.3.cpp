@@ -12,8 +12,9 @@ int main()
     string textS;
     vector<bitacora> bitacoras;
     vector<string> lines;
-    string fecha;
-    vector<string> date;
+    /*string fecha;
+    vector<string> date;*/
+    string ipn;
     bitacora searcher;
     vector<int> location;
     ofstream salida("bitacoras_con_filtro.txt");
@@ -42,53 +43,57 @@ int main()
     }*/
 
     //SORT
-    //utilities::mergeSortBV(bitacoras, 0, bitacoras.size()-1);
-    utilities::quickSortV(bitacoras, 0, bitacoras.size() - 1);
+    utilities::mergeSortBUint(bitacoras, 0, bitacoras.size()-1);
+    /*utilities::quickSortV(bitacoras, 0, bitacoras.size() - 1);*/
 
     while (true)
     {
         cout << "================================================================" << endl << "\nSistema de administracion de bitacoras" << endl;
-        cout << "\nEscribe la fecha del registro que buscas en formato Mes,Dia" << "\nMes en 3 letras en ingles(Aug, Feb, Nov, Jan) con la primera mayuscula y dia en numero, separado por coma (,) "<< "Ejemplo: Jan,1" << "\nPresione e para salir" << endl;
+        cout << "\nEscribe la ip del registro que buscas en formato de 3 numeros separados por ." << "\nEjemplo: 256.256.256.256" << "\nPresione e para salir" << endl;
         try {
-            cin >> fecha;
-            if (fecha == "e")
+            cin >> ipn;
+            if (ipn == "e")
                 return 0;
 
-        date = utilities::split(fecha, ',');
-        if (date.size() != 2)
-            throw "Formato no valido";
-        searcher.setMonth(date[0]);
-        searcher.setDay(stoi(date[1]));
-        if (searcher.getDay() > 31)
-            throw "Te excediste del numero de dias posibles";
-        }
-        catch (const char* msg) {
-            cout << msg << endl;
-            continue;
-        }
-        catch (const exception& msg) { //exception es una clase de errores que contiene varios tipos.
-            cout << "Formato no valido" << endl;
-            continue;
-        }
-        location = utilities::busquedaSec(bitacoras, bitacoras.size(), searcher.getFecha());
-        if (location.size() == 0)
-            cout << "Ningun registro encontrado, revisa el formato" << endl;
-        for (int i = 0; i < location.size(); i++)
+            //date = utilities::split(fecha, ',');
+            //if (date.size() != 2)
+            //    throw "Formato no valido";
+            //searcher.setMonth(date[0]);
+            //searcher.setDay(stoi(date[1]));
+            //if (searcher.getDay() > 31)
+            //    throw "Te excediste del numero de dias posibles";
+            //}
+            //catch (const char* msg) {
+            //    cout << msg << endl;
+            //    continue;
+            //}
+            //catch (const exception& msg) { //exception es una clase de errores que contiene varios tipos.
+            //    cout << "Formato no valido" << endl;
+            //    continue;
+            //}
+            searcher.setIp(ipn);
+            location = utilities::busquedaSecIp(bitacoras, bitacoras.size(), searcher.getIpn());
+            if (location.size() == 0)
+                cout << "Ningun registro encontrado, revisa el formato" << endl;
+            for (int i = 0; i < location.size(); i++)
+            {
+                cout << "La bitacora corresponiente a esa IP es:" << endl;
+                cout << bitacoras[location[i]].getM() << " " << bitacoras[location[i]].getDay() << " " << bitacoras[location[i]].printHour() << " " << bitacoras[location[i]].getIp() << " " << bitacoras[location[i]].getStatus() << endl;
+
+                //Grabar los resultados en el archivo txt
+                salida << bitacoras[i].getM() << " "
+                    << bitacoras[i].getDay() << " "
+                    << bitacoras[i].printHour() << " "
+                    << bitacoras[i].getIp() << " "
+                    << bitacoras[i].getStatus() << endl;
+            }
+            salida.close();
+            cout << "Se ha grabado el archivo exitosamente" << endl;
+        } catch (char* msg) 
         {
-            cout << "La bitacora corresponiente a esa fecha exacta es:" << endl;
-            cout << bitacoras[location[i]].getM() << " " << bitacoras[location[i]].getDay() << " " << bitacoras[location[i]].printHour() << " " << bitacoras[location[i]].getIp() << " " << bitacoras[location[i]].getStatus() << endl;
-            
-            //Grabar los resultados en el archivo txt
-            salida << bitacoras[i].getM() << " "
-                << bitacoras[i].getDay() << " "
-                << bitacoras[i].printHour() << " "
-                << bitacoras[i].getIp() << " "
-                << bitacoras[i].getStatus() << endl;
+            cerr << "Error de ejecución" << endl;
         }
-        salida.close();
-        cout << "Se ha grabado el archivo exitosamente" << endl;
 
     }
-   
         //string tockenizer
 }

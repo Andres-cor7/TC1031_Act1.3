@@ -144,6 +144,18 @@ int utilities::partition(vector<bitacora>& arr, int low, int high)
 	swap(&arr[i + 1], &arr[high]);
 	return (i + 1);
 }
+
+vector<int> utilities::busquedaSecIp(vector<bitacora>& lista, int n, uint64_t clave)
+{
+	vector<int> resultado;
+	for (int i = 0; i < n; i++) {
+		if (lista[i].getIpn() == clave)
+			resultado.push_back(i);
+	}
+	return resultado;
+
+}
+
 void utilities::swap(bitacora* val1, bitacora* val2)
 {
 	bitacora temp = *val1;
@@ -160,4 +172,83 @@ vector<int> utilities::busquedaSec(vector<bitacora>& lista, int n, int clave)
 			resultado.push_back(i);
 	}
 	return resultado;
+}
+
+void utilities::mergeSortBUint(vector<bitacora>& v, int const begin, int const end)
+{
+	if (begin >= end)
+		return;
+
+	auto mid = begin + (end - begin) / 2;
+	utilities::mergeSortBV(v, begin, mid);
+	utilities::mergeSortBV(v, mid + 1, end);
+	utilities::mergeBUint(v, begin, mid, end);
+}
+
+//Complejidad: O(n)
+void utilities::mergeBUint(vector<bitacora>& v, int const left, int const mid, int const right)
+{
+	auto const subArrayOne = mid - left + 1;
+	auto const subArrayTwo = right - mid;
+
+	// Create temp arrays
+	auto* leftArray = new bitacora[subArrayOne],
+		* rightArray = new bitacora[subArrayTwo];
+
+	// Copy data to temp arrays leftArray[] 
+	// and rightArray[]
+	for (auto i = 0; i < subArrayOne; i++)
+		leftArray[i] = v[left + i];
+	for (auto j = 0; j < subArrayTwo; j++)
+		rightArray[j] = v[mid + 1 + j];
+
+	// Initial index of first sub-array
+	// Initial index of second sub-array
+	auto indexOfSubArrayOne = 0,
+		indexOfSubArrayTwo = 0;
+
+	// Initial index of merged array
+	int indexOfMergedArray = left;
+
+	while (indexOfSubArrayOne < subArrayOne &&
+		indexOfSubArrayTwo < subArrayTwo)
+	{
+		if (leftArray[indexOfSubArrayOne].getIpn() >=
+			rightArray[indexOfSubArrayTwo].getIpn())
+		{
+			v[indexOfMergedArray] =
+				leftArray[indexOfSubArrayOne];
+			indexOfSubArrayOne++;
+		}
+		else
+		{
+			v[indexOfMergedArray] =
+				rightArray[indexOfSubArrayTwo];
+			indexOfSubArrayTwo++;
+		}
+		indexOfMergedArray++;
+	}
+
+	// Copy the remaining elements of
+	// left[], if there are any
+	while (indexOfSubArrayOne < subArrayOne)
+	{
+		v[indexOfMergedArray] =
+			leftArray[indexOfSubArrayOne];
+		indexOfSubArrayOne++;
+		indexOfMergedArray++;
+	}
+
+	// Copy the remaining elements of
+	// right[], if there are any
+	while (indexOfSubArrayTwo < subArrayTwo)
+	{
+		v[indexOfMergedArray] =
+			rightArray[indexOfSubArrayTwo];
+		indexOfSubArrayTwo++;
+		indexOfMergedArray++;
+	}
+
+	delete[]leftArray;
+	delete[]rightArray;
 }

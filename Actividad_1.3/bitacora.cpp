@@ -8,6 +8,8 @@ bitacora::bitacora()
     status = "";
     strHour = "";
     hour = {};
+    fecha = 0;
+    ipn = 0;
 }
 bitacora::bitacora(string m, int d, string h, string s, int f)
 {
@@ -56,6 +58,14 @@ int bitacora::getDay()
 string bitacora::getIp()
 {
     return ip;
+}
+
+uint64_t bitacora::getIpn()
+{
+    const string ipn_prueba = getIp();
+    vector<int> a = utilities::splitStoi(ipn_prueba, '.');
+    uint64_t ipn = a[0]*1000000000 + a[1]*1000000 + a[2]*1000 + a[3];
+    return ipn;
 }
 
 string bitacora::getStatus()
@@ -164,5 +174,6 @@ bitacora bitacora::splitBitacora(const string& text, char delimitador)
             throw "Formato de bitacora no permitido";
         cont++;
     }
+
     return b;
 }
